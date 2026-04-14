@@ -162,278 +162,330 @@ export default function ChromaGuessPage() {
             </div>
             <button
               onClick={startReadyCounter}
-              className="bg-black text-white px-12 py-3.5 rounded-full text-[15px] font-semibold hover:bg-gray-800 hover:-translate-y-0.5 transition-all active:scale-95"
+              className="bg-black text-white px-10 py-3.5 rounded-full text-[15px] font-semibold hover:bg-gray-800 hover:-translate-y-0.5 transition-all active:scale-95"
             >
               Start Game
             </button>
           </div>
         )}
 
-        {/* --- PAGE 2: READY-SET-GO --- */}
-        {gameState === "ready" && (
-          <div className="bg-black w-100 h-100 rounded-lg  relative flex items-center justify-center animate-in fade-in duration-500">
-            <span className="absolute top-6 left-6 text-sm font-bold text-white/70">
-              {currentAttempt}/3
-            </span>
-            <span className="text-[20px] font-black text-white leading-none uppercase tracking-widest">
-              {timer === 3 ? "ready" : timer === 2 ? "set" : "go"}
-            </span>
-          </div>
-        )}
+       {/* --- PAGE 2: READY-SET-GO --- */}
+{gameState === "ready" && (
+  <div className="bg-black w-full max-w-[400px] aspect-square rounded-lg shadow-2xl relative flex items-center justify-center animate-in fade-in duration-500 mx-auto">
+    <span className="absolute top-6 left-6 text-xs font-bold text-white/50 uppercase tracking-widest">
+      Attempt {currentAttempt}/3
+    </span>
+    <span className="text-2xl md:text-3xl font-black text-white leading-none uppercase tracking-[0.2em] ">
+      {timer === 3 ? "ready" : timer === 2 ? "set" : "go"}
+    </span>
+  </div>
+)}
 
-        {/* --- PAGE 3: MEMORIZE --- */}
-        {gameState === "memorize" && (
-          <div
-            className="w-100 h-100 rounded-lg relative p-10 flex flex-col items-center justify-center animate-in fade-in duration-500 transition-colors duration-500"
-            style={{
-              backgroundColor: hsbToHex(
-                targetColor.h,
-                targetColor.s,
-                targetColor.b,
-              ),
-            }}
-          >
-            <span className="absolute top-6 left-6 text-sm font-bold text-white/70">
-              {currentAttempt}/3
-            </span>
-            <div className="flex flex-col items-center justify-center">
-              <div className="text-[100px] font-black text-white leading-none flex tracking-tighter drop-shadow-lg">
-                <span className="text-white/30">0</span>
-                {memoTimer.toString().padStart(2, "0")}
-              </div>
-              <p className="text-xs font-bold text-white uppercase tracking-[0.3em] mt-2 drop-shadow-sm">
-                Seconds to remember
-              </p>
-              <div className="w-48 bg-black/10 h-1.5 rounded-full mt-8 overflow-hidden backdrop-blur-sm">
-                <div
-                  className="h-full bg-white transition-all duration-1000 ease-linear shadow-[0_0_10px_rgba(255,255,255,0.5)]"
-                  style={{ width: `${(memoTimer / MEMORIZE_SECS) * 100}%` }}
-                />
-              </div>
-            </div>
-          </div>
-        )}
+{/* --- PAGE 3: MEMORIZE --- */}
+{gameState === "memorize" && (
+  <div
+    className="w-full max-w-[400px] aspect-square rounded-lg shadow-2xl relative p-6 md:p-10 flex flex-col items-center justify-center animate-in fade-in duration-500 transition-colors duration-500 mx-auto"
+    style={{
+      backgroundColor: hsbToHex(targetColor.h, targetColor.s, targetColor.b),
+    }}
+  >
+    <span className="absolute top-6 left-6 text-xs font-bold text-white/70 uppercase tracking-widest">
+      Attempt {currentAttempt}/3
+    </span>
+    <div className="flex flex-col items-center justify-center w-full">
+      <div className="text-[80px] md:text-[100px] font-black text-white leading-none flex tracking-tighter drop-shadow-lg">
+        <span className="text-white/30">0</span>
+        {memoTimer.toString().padStart(2, "0")}
+      </div>
+      <p className="text-[10px] md:text-xs font-bold text-white uppercase tracking-[0.3em] mt-2 drop-shadow-sm text-center">
+        Seconds to remember
+      </p>
+      <div className="w-32 md:w-48 bg-black/10 h-1.5 rounded-full mt-8 overflow-hidden backdrop-blur-sm">
+        <div
+          className="h-full bg-white transition-all duration-1000 ease-linear shadow-[0_0_10px_rgba(255,255,255,0.5)]"
+          style={{ width: `${(memoTimer / MEMORIZE_SECS) * 100}%` }}
+        />
+      </div>
+    </div>
+  </div>
+)}
 
-        {/* --- PAGE 4: PICK --- */}
+{/* --- PAGE 4: PICK --- */}
+
         {gameState === "pick" && (
+
           <div
+
             className="w-full max-w-[500px] h-[400px] rounded-lg  relative flex overflow-hidden animate-in slide-in-from-bottom-8 duration-700 transition-colors duration-300"
+
             style={{
+
               backgroundColor: hsbToHex(
+
                 selectedColor.h,
+
                 selectedColor.s,
+
                 selectedColor.b,
+
               ),
+
             }}
+
           >
+
             <div className="relative w-20 h-full bg-black/10 backdrop-blur-lg border-r border-white/10 group">
+
               <input
+
                 type="range"
+
                 min="0"
+
                 max="360"
+
                 step="1"
+
                 value={selectedColor.h}
+
                 onChange={(e) =>
+
                   setSelectedColor({
+
                     ...selectedColor,
+
                     h: parseInt(e.target.value),
+
                   })
+
                 }
+
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-30"
+
                 style={{ WebkitAppearance: "slider-vertical" }}
+
               />
+
               <div
+
                 className="absolute top-8 bottom-8 left-1/2 -translate-x-1/2 w-3 rounded-full shadow-inner"
+
                 style={{
+
                   background:
+
                     "linear-gradient(to top, hsl(0,100%,50%), hsl(60,100%,50%), hsl(120,100%,50%), hsl(180,100%,50%), hsl(240,100%,50%), hsl(300,100%,50%), hsl(360,100%,50%))",
+
                 }}
+
               />
+
               <div
+
                 className="absolute left-1/2 -translate-x-1/2 w-8 h-8 bg-white rounded-full shadow-2xl border-[3px] border-white pointer-events-none z-20"
+
                 style={{
+
                   bottom: `calc(${(selectedColor.h / 360) * 100}% + 20px)`,
+
                 }}
+
               />
+
             </div>
+
             <div className="relative w-20 h-full bg-black/10 backdrop-blur-lg border-r border-white/10 group">
+
               <input
+
                 type="range"
+
                 min="0"
+
                 max="100"
+
                 step="1"
+
                 value={selectedColor.s}
+
                 onChange={(e) =>
+
                   setSelectedColor({
+
                     ...selectedColor,
+
                     s: parseInt(e.target.value),
+
                   })
+
                 }
+
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-30"
+
                 style={{ WebkitAppearance: "slider-vertical" }}
+
               />
+
               <div
+
                 className="absolute top-8 bottom-8 left-1/2 -translate-x-1/2 w-3 rounded-full shadow-inner"
+
                 style={{
+
                   background: `linear-gradient(to top, hsl(${selectedColor.h}, 0%, ${selectedColor.b / 2}%), hsl(${selectedColor.h}, 100%, ${selectedColor.b}%))`,
+
                 }}
+
               />
+
               <div
+
                 className="absolute left-1/2 -translate-x-1/2 w-8 h-8 bg-white rounded-full shadow-2xl border-[3px] border-white pointer-events-none z-20"
+
                 style={{ bottom: `calc(${selectedColor.s}% + 20px)` }}
+
               />
+
             </div>
+
             <div className="relative w-20 h-full bg-black/10 backdrop-blur-lg group">
+
               <input
+
                 type="range"
+
                 min="0"
+
                 max="100"
+
                 step="1"
+
                 value={selectedColor.b}
+
                 onChange={(e) =>
+
                   setSelectedColor({
+
                     ...selectedColor,
+
                     b: parseInt(e.target.value),
+
                   })
+
                 }
+
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-30"
+
                 style={{ WebkitAppearance: "slider-vertical" }}
+
               />
+
               <div
+
                 className="absolute top-8 bottom-8 left-1/2 -translate-x-1/2 w-3 rounded-full shadow-inner"
+
                 style={{
+
                   background: `linear-gradient(to top, black, ${hsbToHex(selectedColor.h, selectedColor.s, 100)})`,
+
                 }}
+
               />
+
               <div
+
                 className="absolute left-1/2 -translate-x-1/2 w-8 h-8 bg-white rounded-full shadow-2xl border-[3px] border-white pointer-events-none z-20"
+
                 style={{ bottom: `calc(${selectedColor.b}% + 20px)` }}
+
               />
+
             </div>
+
             <button
+
               onClick={submitGuess}
+
               className="absolute bottom-10 right-10 bg-white text-black w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-90 transition-all group z-40"
+
             >
+
               <svg
+
                 xmlns="http://www.w3.org/2000/svg"
+
                 width="32"
+
                 height="32"
+
                 viewBox="0 0 24 24"
+
                 fill="none"
+
                 stroke="currentColor"
+
                 strokeWidth="2"
+
                 strokeLinecap="round"
+
                 strokeLinejoin="round"
+
                 className="group-hover:rotate-90 transition-transform duration-500"
+
               >
+
                 <circle cx="12" cy="12" r="10" />
+
                 <circle cx="12" cy="12" r="6" />
+
                 <circle cx="12" cy="12" r="2" />
+
               </svg>
+
             </button>
+
           </div>
+
         )}
 
-        {/* --- PAGE 5: RESULT --- */}
-        {gameState === "result" && matchPercentage !== null && (
-          <div className="w-100 h-100 rounded-lg relative flex flex-col overflow-hidden animate-in zoom-in duration-500">
-            {/* Upper section: User's Selection */}
-            <div
-              className={`flex-1 p-8 relative flex flex-col justify-between transition-colors duration-500 ${
-                // Agar brightness 60 se kam hai to white text (text-white), warna black (text-black)
-                selectedColor.b < 60 ? "text-white" : "text-black"
-              }`}
-              style={{
-                backgroundColor: hsbToHex(
-                  selectedColor.h,
-                  selectedColor.s,
-                  selectedColor.b,
-                ),
-              }}
-            >
-              <span
-                className={`absolute top-6 left-6 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-widest ${
-                  selectedColor.b < 60
-                    ? "text-white/60 bg-white/10"
-                    : "text-black/60 bg-black/10"
-                }`}
-              >
-                Attempt {currentAttempt}/3
-              </span>
-
-              <div className="text-right">
-                <div className="text-5xl font-semibold leading-none tracking-tighter">
-                  {matchPercentage.toFixed(0)}
-                  <span className="text-3xl ml-1">%</span>
-                </div>
-                <p className="text-[11px] max-w-[180px] ml-auto mt-2 font-bold leading-tight uppercase tracking-wider opacity-80">
-                  {matchPercentage > 95
-                    ? "Perfect accuracy! You have a golden eye."
-                    : matchPercentage > 85
-                      ? "Great job! Almost a perfect match."
-                      : "Confidence is key, but practice makes perfect."}
-                </p>
-              </div>
-
-              <div className="w-fit rounded-2xl backdrop-blur-sm">
-                <p className="text-[10px] font-bold opacity-60 uppercase">
-                  Your selection
-                </p>
-                <p className="text-lg font-bold uppercase tracking-tight">
-                  H{selectedColor.h} S{selectedColor.s} B{selectedColor.b}
-                </p>
-              </div>
-            </div>
-
-            {/* Lower section: Original Target Color */}
-            <div
-              className={`h-[130px] p-7 flex justify-between items-end relative transition-colors duration-500 ${
-                // Target color ki brightness check ho rahi hai
-                targetColor.b < 60 ? "text-white" : "text-black"
-              }`}
-              style={{
-                backgroundColor: hsbToHex(
-                  targetColor.h,
-                  targetColor.s,
-                  targetColor.b,
-                ),
-              }}
-            >
-              <div className="rounded-2xl backdrop-blur-sm">
-                <p className="text-[10px] font-bold opacity-60 uppercase tracking-widest">
-                  Original color
-                </p>
-                <p className="text-lg font-bold uppercase tracking-tight">
-                  H{targetColor.h} S{targetColor.s} B{targetColor.b}
-                </p>
-              </div>
-
-              <button
-                onClick={startReadyCounter}
-                className={`absolute bottom-6 right-6 w-12 h-12 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-90 transition-all group z-10 ${
-                  targetColor.b < 60
-                    ? "bg-white text-black"
-                    : "bg-black text-white"
-                }`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="28"
-                  height="28"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M5 12h14" />
-                  <path d="m12 5 7 7-7 7" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        )}
+{/* --- PAGE 5: RESULT --- */}
+{gameState === "result" && (
+  <div className="w-full max-w-[450px] aspect-[4/5] md:aspect-square rounded-lg relative flex flex-col overflow-hidden animate-in zoom-in duration-500  mx-auto">
+    <div
+      className={`flex-1 p-6 md:p-8 relative flex flex-col justify-between transition-colors duration-500 ${selectedColor.b < 60 ? "text-white" : "text-black"}`}
+      style={{ backgroundColor: hsbToHex(selectedColor.h, selectedColor.s, selectedColor.b) }}
+    >
+      <span className={`absolute top-6 left-6 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest ${selectedColor.b < 60 ? "bg-white/10" : "bg-black/10"}`}>
+        Attempt {currentAttempt}/3
+      </span>
+      <div className="text-right mt-4">
+        <div className="text-5xl md:text-6xl font-black leading-none tracking-tighter">
+          {matchPercentage?.toFixed(0)}%
+        </div>
+        <p className="text-[10px] md:text-[11px] font-bold uppercase tracking-wider opacity-70 mt-1">Match Accuracy</p>
+      </div>
+      <div className="mt-4">
+        <p className="text-[10px] font-bold opacity-60 uppercase">Your Pick</p>
+        <p className="text-lg md:text-xl font-black tracking-tight">H{selectedColor.h} S{selectedColor.s} B{selectedColor.b}</p>
+      </div>
+    </div>
+    <div
+      className={`h-[100px] md:h-[130px] p-6 flex justify-between items-center relative ${targetColor.b < 60 ? "text-white" : "text-black"}`}
+      style={{ backgroundColor: hsbToHex(targetColor.h, targetColor.s, targetColor.b) }}
+    >
+      <div>
+        <p className="text-[10px] font-bold opacity-60 uppercase">Target</p>
+        <p className="text-lg md:text-xl font-black tracking-tight">H{targetColor.h} S{targetColor.s} B{targetColor.b}</p>
+      </div>
+      <button
+        onClick={startReadyCounter}
+        className={`w-12 h-12 rounded-full flex items-center justify-center shadow-xl hover:scale-110 active:scale-95 transition-all ${targetColor.b < 60 ? "bg-white text-black" : "bg-black text-white"}`}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+      </button>
+    </div>
+  </div>
+)}
       </main>
     </div>
   );

@@ -215,7 +215,7 @@ export default function GamePage() {
               </div>
               <button
                 onClick={startGame}
-                className="bg-black text-white px-12 py-3.5 rounded-full text-[15px] font-semibold hover:bg-gray-800 hover:-translate-y-0.5 transition-all active:scale-95"
+                className="bg-black text-white px-10 py-3.5 rounded-full text-[15px] font-semibold hover:bg-gray-800 hover:-translate-y-0.5 transition-all active:scale-95"
               >
                 Start Game
               </button>
@@ -249,7 +249,7 @@ export default function GamePage() {
               >
                 {timeLeft}
               </p>
-              <p className="text-xs text-gray-300 mt-1.5">
+              <p className="text-xs text-gray-400 mt-1.5">
                 Then pick the matching palette
               </p>
             </div>
@@ -257,13 +257,13 @@ export default function GamePage() {
 
           {/* GUESS */}
           {screen === "guess" && (
-            <div className="w-full">
-              <p className="text-center text-[10px] tracking-[2.5px] uppercase text-gray-300 font-semibold mb-4">
+            <div className="w-full ">
+              <p className="text-center text-[12px] tracking-[2.5px] uppercase text-gray-500 font-semibold mb-4">
                 Which palette had this color?
               </p>
 
               <div className="flex items-center justify-center gap-2 mb-5">
-                <span className="text-xs text-gray-300 mr-1">
+                <span className="text-xs text-gray-400 mr-1">
                   Attempt {attempt + 1}/{MAX_ATTEMPTS}
                 </span>
                 {Array.from({ length: MAX_ATTEMPTS }).map((_, i) => {
@@ -277,7 +277,7 @@ export default function GamePage() {
                   );
                 })}
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full ">
                 {palettes.map((pal, i) => {
                   const isLocked = lockedWrong.includes(i);
                   const flash = flashIdx?.idx === i;
@@ -286,7 +286,7 @@ export default function GamePage() {
                       key={i}
                       onClick={() => handleGuess(i)}
                       disabled={isLocked}
-                      className={`relative flex h-20  rounded-2xl overflow-hidden transition-all duration-200
+                      className={`relative flex h-10 md:h-20  rounded-lg overflow-hidden transition-all duration-200
                         ${isLocked ? "opacity-25 cursor-not-allowed" : "cursor-pointer hover:scale-[1.025]"}
                         ${flash && flashIdx?.ok ? "ring-[3px] ring-green-400 ring-offset-2 scale-[1.025]" : ""}
                         ${flash && !flashIdx?.ok ? "ring-[3px] ring-red-400 ring-offset-2" : ""}
@@ -361,9 +361,9 @@ export default function GamePage() {
               </p>
               <button
                 onClick={nextRound}
-                className="bg-black text-white px-10 py-3 rounded-full text-sm font-semibold hover:bg-gray-800 hover:-translate-y-0.5 transition-all active:scale-95"
+                className="bg-black text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-gray-800 hover:-translate-y-0.5 transition-all active:scale-95"
               >
-                {round >= TOTAL_ROUNDS ? "See Final Score →" : "Next Round →"}
+                {round >= TOTAL_ROUNDS ? "See Final Score " : "Next Round →"}
               </button>
             </div>
           )}
@@ -380,7 +380,7 @@ export default function GamePage() {
               >
                 {score}
               </p>
-              <span className="inline-block text-sm text-gray-500 bg-[#f5f4f1] rounded-full px-5 py-2 mb-7">
+              <span className="inline-block text-sm text-gray-500 bg-[#f5f4f1] rounded-full px-2 md:px-4 py-2 mb-7">
                 {score >= 80
                   ? "Color Master! Incredible eye!"
                   : score >= 60
@@ -395,8 +395,8 @@ export default function GamePage() {
                 {roundHistory.map((r, i) => (
                   <div
                     key={i}
-                    className="flex-1 bg-[#f8f6f2] rounded-2xl py-3.5 text-center"
-                  >
+                    className="flex-1 bg-[#f8f6f2] rounded-2xl px-2 py-3.5 text-center"
+                  > 
                     <p
                       className="text-xl font-black"
                       style={{

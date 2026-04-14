@@ -10,58 +10,61 @@ export default function Footer() {
         ))}
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-10">
-        {/* Brand */}
-        <div>
-          <div className="flex items-center gap-2 mb-3">
+      <div className="max-w-6xl mx-auto px-6 pt-16 pb-12 grid grid-cols-1 md:grid-cols-4 gap-12">
+        {/* Brand - Takes more space on desktop */}
+        <div className="md:col-span-2 ">
+          <Link href="/" className="flex items-center mb-4 gap-2.5 group">
             <div className="flex gap-1">
-              {["#FF6B6B", "#FFD166", "#06D6A0"].map((c) => (
-                <span key={c} className="w-2 h-2 rounded-full" style={{ background: c }} />
+              {["#FF6B6B", "#FFD166", "#06D6A0", "#118AB2"].map((c, i) => (
+                <span
+                  key={c}
+                  className="w-2.5 h-2.5 rounded-full"
+                  style={{
+                    background: c,
+                    animation: "wave 1.4s ease-in-out infinite",
+                    animationDelay: `${i * 0.12}s`,
+                  }}
+                />
               ))}
             </div>
-            <span className="font-bold text-gray-900 text-lg" style={{ fontFamily: "'Fraunces', serif" }}>
+            <span
+              className="font-bold text-gray-900 text-xl tracking-tight"
+              style={{ fontFamily: "'Fraunces', serif" }}
+            >
               Paletto
             </span>
-          </div>
-          <p className="text-sm text-gray-500 leading-relaxed max-w-xs">
-            Discover beautiful color palettes powered by colormagic.app. Find your perfect color story in seconds.
+          </Link>
+          <p className="text-sm text-gray-500 leading-relaxed max-w-sm">
+            Discover beautiful color palettes powered by colormagic.app. <br className="hidden md:block" />
+            Find your perfect color story in seconds.
           </p>
         </div>
 
         {/* Navigate */}
-        <div>
-          <p className="text-xs font-semibold text-gray-900 uppercase tracking-widest mb-4">Navigate</p>
-          <ul className="space-y-2.5">
+        <div className="flex flex-col">
+          <p className="text-[10px] font-black text-gray-900 uppercase tracking-[0.2em] mb-6">Navigate</p>
+          <ul className="space-y-3.5">
             {[
               { href: "/", label: "Explore Palettes" },
-              { href: "/about", label: "About Paletto" },
+              { href: "/saved", label: "Saved Palette" },
+              { href: "/game", label: "Play Games" },
             ].map((l) => (
               <li key={l.href}>
-                <Link href={l.href} className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200">
+                <Link href={l.href} className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200 font-medium">
                   {l.label}
                 </Link>
               </li>
             ))}
-            <li>
-              <a
-                href="https://colormagic.app"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200"
-              >
-                colormagic.app ↗
-              </a>
-            </li>
           </ul>
         </div>
 
         {/* Stack */}
-        <div>
-          <p className="text-xs font-semibold text-gray-900 uppercase tracking-widest mb-4">Built With</p>
-          <ul className="space-y-2.5">
-            {["Next.js 14", "TypeScript", "Tailwind CSS", "colormagic API"].map((t) => (
-              <li key={t} className="flex items-center gap-2 text-sm text-gray-500">
-                <span className="w-1 h-1 rounded-full bg-gray-400" />
+        <div className="flex flex-col">
+          <p className="text-[10px] font-black text-gray-900 uppercase tracking-[0.2em] mb-6">Built With</p>
+          <ul className="space-y-3.5">
+            {["Next.js 14", "TypeScript", "Tailwind CSS"].map((t) => (
+              <li key={t} className="flex items-center gap-3 text-sm text-gray-500 font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-black/10 flex-shrink-0" />
                 {t}
               </li>
             ))}
@@ -70,10 +73,13 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-black/[0.06] py-5 px-6 max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-        <p className="text-xs text-gray-400">© {new Date().getFullYear()} Paletto. Palette data from colormagic.app.</p>
-        <p className="text-xs text-gray-400">Click any swatch to copy HEX</p>
-      </div>
+      <div className="border-t border-black/[0.06] mt-4">
+  <div className="max-w-6xl mx-auto py-8 px-6 flex flex-col items-center justify-center">
+    <p className="text-[14px] text-gray-400 font-medium text-center tracking-wider">
+      © {new Date().getFullYear()} Paletto. All rights reserved.
+    </p>
+  </div>
+</div>
     </footer>
   );
 }

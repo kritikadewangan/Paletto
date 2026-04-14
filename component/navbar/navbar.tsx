@@ -19,16 +19,12 @@ export default function Navbar() {
     { href: "/", label: "Generate" },
     { href: "/game", label: "Game" },
     { href: "/saved", label: "Saved" },
-    { href: "/tools", label: "Tools" },
-    { href: "/about", label: "About" },
+    
   ];
 
   return (
     <>
-      {/* Note: Kyunki Header 'fixed' hai, margin-bottom asar nahi karega. 
-         Isliye hum yahan ek invisible div (spacer) add kar rahe hain 
-         jo navbar ke niche 10 units (2.5rem/40px) ka gap banayega.
-      */}
+      
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
@@ -70,8 +66,8 @@ export default function Navbar() {
                   href={link.href}
                   className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 ${
                     active
-                      ? "bg-black/[0.08] text-gray-900"
-                      : "text-gray-500 hover:text-gray-900 hover:bg-black/[0.04]"
+                      ? "underline underline-offset-4  text-gray-900"
+                      : "text-gray-500 hover:text-gray-900 hover:underline hover:underline-offset-4"
                   }`}
                 >
                   {link.label}

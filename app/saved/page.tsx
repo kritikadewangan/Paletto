@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "@/component/navbar/navbar";
+import Footer from "@/component/footer/footer";
 
 type SavedPalette = {
   id: string;
@@ -43,22 +44,23 @@ export default function SavedPage() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gray-50/50 pt-32 pb-20 px-6">
+      <div className="min-h-screen bg-gray-50/50 pt-10 pb-20 px-6">
         <div className="max-w-7xl mx-auto">
           {/* Header Section */}
           <div className="mb-12 text-center">
-            <h1
-              className="text-4xl md:text-6xl font-bold mb-4 tracking-tight"
+            <h1 
+            className="text-4xl md:text-6xl font-black mb-4 tracking-tight"
+            style={{ fontFamily: "'Fraunces', serif" }}
+          >
+            Your <span 
               style={{
-                fontFamily: "'Fraunces', serif",
                 background: "linear-gradient(120deg, #FF6B6B 0%, #FFD166 45%, #06D6A0 90%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 display: "inline-block"
               }}
-            >
-              Your Library
-            </h1>
+            >Library</span>
+          </h1>
 
             <p className="text-gray-500 max-w-md mx-auto">
               All your curated color palettes saved in one place.
@@ -127,6 +129,7 @@ export default function SavedPage() {
           )}
         </div>
       </div>
+      <Footer/>
     </>
   );
 }

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Navbar from "@/component/navbar/navbar";
+import Footer from "@/component/footer/footer";
 
 const GAMES = [
   {
@@ -28,7 +29,7 @@ export default function GameSelectionPage() {
     <div className="min-h-screen bg-gray-50/50">
       <Navbar />
       
-      <main className="max-w-6xl mx-auto pt-32 pb-20 px-6">
+      <main className="max-w-6xl mx-auto pt-10 pb-20 px-6">
         {/* Header */}
         <div className="text-center mb-16">
           <h1 
@@ -79,6 +80,7 @@ export default function GameSelectionPage() {
         </div>
 
       </main>
+      <Footer/>
     </div>
   );
 }

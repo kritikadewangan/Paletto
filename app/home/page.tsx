@@ -56,60 +56,64 @@ function PaletteCard({
   }
 
   // PaletteCard component ke andar return block ko aise update karein:
-return (
-  <div
-    className="group rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
-    style={{
-      opacity: visible ? 1 : 0,
-      transform: visible ? "translateY(0)" : "translateY(18px)",
-    }}
-  >
-    {/* Color Bars Section */}
-    <div className="flex h-40 relative">
-      {palette.colors.map((rawColor, i) => {
-        const hex = toHex(rawColor);
-        const isHov = hoveredIdx === i;
-        return (
-          <button
-            key={i}
-            onClick={() => copy(hex)}
-            onMouseEnter={() => setHoveredIdx(i)}
-            onMouseLeave={() => setHoveredIdx(null)}
-            className="relative flex items-end justify-center pb-2.5"
-            style={{
-              background: hex,
-              flex: isHov ? 1.8 : 1,
-              transition: "flex 0.25s ease",
-            }}
-          >
-            <span
-              className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-full"
+  return (
+    <div
+      className="group rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(18px)",
+      }}
+    >
+      {/* Color Bars Section */}
+      <div className="flex h-40 relative">
+        {palette.colors.map((rawColor, i) => {
+          const hex = toHex(rawColor);
+          const isHov = hoveredIdx === i;
+          return (
+            <button
+              key={i}
+              onClick={() => copy(hex)}
+              onMouseEnter={() => setHoveredIdx(i)}
+              onMouseLeave={() => setHoveredIdx(null)}
+              className="relative flex items-end justify-center pb-2.5"
               style={{
-                color: getTextColor(hex),
-                background: `${hex}bb`,
-                opacity: isHov ? 1 : 0,
+                background: hex,
+                flex: isHov ? 1.8 : 1,
+                transition: "flex 0.25s ease",
               }}
             >
-              {copiedHex === hex ? "✓ copied" : hex.toUpperCase()}
-            </span>
-          </button>
-        );
-      })}
-    </div>
-
-    {/* Yahan se click karne par naya page khulega */}
-    <Link href={`/palette/${palette.id || index}?colors=${palette.colors.map(c => c.replace('#','')).join(',')}&name=${palette.text}`}>
-      <div className="px-4 py-3 flex items-center justify-between gap-2 cursor-pointer hover:bg-gray-50 transition-colors">
-        <div className="min-w-0">
-          <p className="text-sm font-semibold text-gray-800 capitalize truncate">
-            {palette.text}
-          </p>
-          <p className="text-xs text-gray-400 mt-0.5">View Details & Save →</p>
-        </div>
+              <span
+                className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-full"
+                style={{
+                  color: getTextColor(hex),
+                  background: `${hex}bb`,
+                  opacity: isHov ? 1 : 0,
+                }}
+              >
+                {copiedHex === hex ? "✓ copied" : hex.toUpperCase()}
+              </span>
+            </button>
+          );
+        })}
       </div>
-    </Link>
-  </div>
-);
+
+      {/* Yahan se click karne par naya page khulega */}
+      <Link
+        href={`/palette/${palette.id || index}?colors=${palette.colors.map((c) => c.replace("#", "")).join(",")}&name=${palette.text}`}
+      >
+        <div className="px-4 py-3 flex items-center justify-between gap-2 cursor-pointer hover:bg-gray-50 transition-colors">
+          <div className="min-w-0">
+            <p className="text-sm font-semibold text-gray-800 capitalize truncate">
+              {palette.text}
+            </p>
+            <p className="text-xs text-gray-400 mt-0.5">
+              View Details & Save →
+            </p>
+          </div>
+        </div>
+      </Link>
+    </div>
+  );
 }
 
 function SkeletonCard() {
@@ -137,6 +141,19 @@ export default function HomePage() {
   const [activeChip, setActiveChip] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    const savedResults = sessionStorage.getItem("paletto_results");
+    const savedQuery = sessionStorage.getItem("paletto_query");
+    const savedActiveChip = sessionStorage.getItem("paletto_chip");
+
+    if (savedResults) {
+      setResults(JSON.parse(savedResults));
+      setSearched(true);
+    }
+    if (savedQuery) setQuery(savedQuery);
+    if (savedActiveChip) setActiveChip(savedActiveChip);
+  }, []);
+
   async function search(q?: string) {
     const term = (q ?? query).trim();
     if (!term) return;
@@ -148,14 +165,16 @@ export default function HomePage() {
     setResults([]);
     setSearched(true);
 
+    // Search term aur chip save karein
+    sessionStorage.setItem("paletto_query", term);
+    sessionStorage.setItem("paletto_chip", q ?? "");
+
     try {
       const res = await fetch(`/api/palette?q=${encodeURIComponent(term)}`);
-
       if (!res.ok) throw new Error(`Server responded with ${res.status}`);
 
       const data = await res.json();
 
-      // Handling different possible data structures from the proxy
       let finalItems: PaletteItem[] = [];
       if (Array.isArray(data)) {
         finalItems = data;
@@ -164,6 +183,8 @@ export default function HomePage() {
       }
 
       setResults(finalItems);
+      // Results ko session mein save karein
+      sessionStorage.setItem("paletto_results", JSON.stringify(finalItems));
     } catch (err) {
       console.error("Fetch error:", err);
       setError("Failed to load palettes. Please try again.");
@@ -210,14 +231,14 @@ export default function HomePage() {
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && search()}
             placeholder="Search mood (e.g. sunset)..."
-            className="flex-1 px-4 py-3 text-sm outline-none font-medium"
+            className="flex-1 px-3 md:px-4 py-3 text-sm outline-none font-medium min-w-0"
           />
           <button
             onClick={() => search()}
             disabled={loading || !query.trim()}
-            className="bg-gray-950 text-white text-sm font-semibold px-6 py-3 rounded-xl hover:bg-gray-800 transition-all"
+            className="bg-gray-950 text-white text-xs md:text-sm font-semibold px-4 md:px-6 py-3 rounded-xl hover:bg-gray-800 transition-all disabled:opacity-50 whitespace-nowrap"
           >
-            {loading ? "Searching..." : "Search"}
+            {loading ? "..." : "Search"}
           </button>
         </div>
 
@@ -263,25 +284,27 @@ export default function HomePage() {
             No palettes found.
           </div>
         )}
-       {!searched && !loading && (
-  <div className="text-center py-20">
-    <div className="flex justify-center gap-3 mb-6">
-      {["#FF6B6B", "#FFD166", "#06D6A0", "#118AB2"].map((c, i) => (
-        <div
-          key={c}
-          className="w-10 h-10 rounded-xl shadow-md"
-          style={{
-            background: c,
-            // Navbar wali animation apply kar rahe hain
-            animation: "wave 1.4s ease-in-out infinite",
-            animationDelay: `${i * 0.12}s`, 
-          }}
-        />
-      ))}
-    </div>
-    <p className="text-gray-400 text-sm">Search a mood to discover palettes</p>
-  </div>
-)}
+        {!searched && !loading && (
+          <div className="text-center py-20">
+            <div className="flex justify-center gap-3 mb-6">
+              {["#FF6B6B", "#FFD166", "#06D6A0", "#118AB2"].map((c, i) => (
+                <div
+                  key={c}
+                  className="w-10 h-10 rounded-xl shadow-md"
+                  style={{
+                    background: c,
+                    // Navbar wali animation apply kar rahe hain
+                    animation: "wave 1.4s ease-in-out infinite",
+                    animationDelay: `${i * 0.12}s`,
+                  }}
+                />
+              ))}
+            </div>
+            <p className="text-gray-400 text-sm">
+              Search a mood to discover palettes
+            </p>
+          </div>
+        )}
       </section>
     </div>
   );
