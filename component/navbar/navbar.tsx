@@ -19,16 +19,12 @@ export default function Navbar() {
     { href: "/", label: "Generate" },
     { href: "/game", label: "Game" },
     { href: "/saved", label: "Saved" },
-    { href: "/tools", label: "Tools" },
-    { href: "/about", label: "About" },
+    
   ];
 
   return (
     <>
-      {/* Note: Kyunki Header 'fixed' hai, margin-bottom asar nahi karega. 
-         Isliye hum yahan ek invisible div (spacer) add kar rahe hain 
-         jo navbar ke niche 10 units (2.5rem/40px) ka gap banayega.
-      */}
+      
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
